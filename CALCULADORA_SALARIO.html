@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Salário</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Salário</h1>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome"><br>
+    
+    <label for="salarioBruto">Salário Bruto:</label>
+    <input type="number" id="salarioBruto"><br>
+    
+    <label for="descontos">Descontos:</label>
+    <input type="number" id="descontos"><br>
+    
+    <label for="filhos">Quantidade de Filhos:</label>
+    <input type="number" id="filhos"><br>
+    
+    <button onclick="calcularSalario()">Calcular Salário</button>
+
+    <h2 id="resultado"></h2>
+
+    <script>
+        function calcularSalario() {
+            const nome = document.getElementById("nome").value;
+            const salarioBruto = parseFloat(document.getElementById("salarioBruto").value);
+            const descontos = parseFloat(document.getElementById("descontos").value);
+            const filhos = parseInt(document.getElementById("filhos").value);
+            
+            const adicionalPorFilho = 100;
+            const salarioLiquido = salarioBruto - descontos + (filhos * adicionalPorFilho);
+            
+            document.getElementById("resultado").innerText = `Olá, ${nome}. Seu salário líquido é: R$ ${salarioLiquido.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
