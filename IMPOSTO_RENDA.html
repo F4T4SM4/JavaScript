@@ -17,10 +17,7 @@
     <label for="salarioBruto">Salário Bruto:</label>
     <input type="number" id="salarioBruto"><br>
     
-    <label for="desconto">Desconto do INSS (%):</label>
-    <input type="number" id="desconto"><br>
-    
-    <button onclick="calcularImposto()">Calcular Imposto de Renda</button>
+    <button onclick="calcularImposto()">Calcular Imposto</button>
 
     <h2 id="resultado"></h2>
 
@@ -28,22 +25,18 @@
         function calcularImposto() {
             const nome = document.getElementById("nome").value;
             const salarioBruto = parseFloat(document.getElementById("salarioBruto").value);
-            const percentualDesconto = parseFloat(document.getElementById("desconto").value) / 100;
             
-            const descontoINSS = salarioBruto * percentualDesconto;
-            const salarioLiquido = salarioBruto - descontoINSS;
-
             let percentualImposto;
-            if (salarioLiquido < 2000) {
-                percentualImposto = 0.30; // 30% se o salário líquido for menor que 2 mil
+            if (salarioBruto < 2000) {
+                percentualImposto = 0.30; // 30% para salários menores que 2000
             } else {
-                percentualImposto = 0.40; // 40% se for maior que 2 mil
+                percentualImposto = 0.40; // 40% para salários maiores ou iguais a 2000
             }
-
-            const impostoRenda = salarioLiquido * percentualImposto;
-            const salarioFinal = salarioLiquido - impostoRenda;
-
-            document.getElementById("resultado").innerText = `Olá, ${nome}. O imposto de renda é: R$ ${impostoRenda.toFixed(2)}, e seu salário final é: R$ ${salarioFinal.toFixed(2)}`;
+            
+            const descontoImposto = salarioBruto * percentualImposto;
+            const salarioLiquido = salarioBruto - descontoImposto;
+            
+            document.getElementById("resultado").innerText = `Olá, ${nome}. O desconto do imposto de renda é: R$ ${descontoImposto.toFixed(2)}, e seu salário líquido é: R$ ${salarioLiquido.toFixed(2)}`;
         }
     </script>
 </body>
