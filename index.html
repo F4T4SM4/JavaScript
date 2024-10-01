@@ -1,65 +1,140 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área de Login</title>
+    <title>Calculadora de Salários e Impostos</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { margin: 5px 0; }
+        .hidden { display: none; }
+        .menu, .calculadora { margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Login</h2>
+    <div id="login">
+        <h1>Área de Login</h1>
         <label for="email">Email:</label>
-        <input type="email" id="email" required><br>
+        <input type="text" id="email"><br>
         
         <label for="senha">Senha:</label>
-        <input type="password" id="senha" required><br>
+        <input type="password" id="senha"><br>
         
-        <button onclick="login()">Login</button>
+        <button onclick="login()">Entrar</button>
     </div>
+
+    <div class="menu hidden" id="menu">
+        <h1>Menu</h1>
+        <button onclick="mostrarCalculadora('salario')">Calcular Salário Líquido</button><br>
+        <button onclick="mostrarCalculadora('inss')">Calcular Desconto INSS</button><br>
+        <button onclick="mostrarCalculadora('imposto')">Calcular Imposto de Renda</button>
+    </div>
+
+    <div class="calculadora hidden" id="calculadora"></div>
+
     <script>
         function login() {
-            var email = document.getElementById("email").value;
-            var senha = document.getElementById("senha").value;
-            
-            if (email === "admin@example.com" && senha === "123456") {
-                window.location.href = "menu.html";
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            // Simulação de login (substitua pela lógica de autenticação real)
+            if (email && senha) {
+                document.getElementById("login").classList.add("hidden");
+                document.getElementById("menu").classList.remove("hidden");
             } else {
-                alert("Email ou senha incorretos!");
+                alert("Por favor, preencha todos os campos.");
             }
+        }
+
+        function mostrarCalculadora(tipo) {
+            const calculadoraDiv = document.getElementById("calculadora");
+            calculadoraDiv.innerHTML = ""; // Limpa o conteúdo anterior
+
+            if (tipo === 'salario') {
+                calculadoraDiv.innerHTML = `
+                    <h2>Calculadora de Salário Líquido</h2>
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome"><br>
+                    <label for="salarioBruto">Salário Bruto:</label>
+                    <input type="number" id="salarioBruto"><br>
+                    <label for="desconto">Descontos:</label>
+                    <input type="number" id="desconto"><br>
+                    <label for="filhos">Quantidade de Filhos:</label>
+                    <input type="number" id="filhos"><br>
+                    <button onclick="calcularSalario()">Calcular Salário</button>
+                    <h2 id="resultadoSalario"></h2>
+                `;
+            } else if (tipo === 'inss') {
+                calculadoraDiv.innerHTML = `
+                    <h2>Calculadora de Desconto do INSS</h2>
+                    <label for="nomeInss">Nome:</label>
+                    <input type="text" id="nomeInss"><br>
+                    <label for="salarioBrutoInss">Salário Bruto:</label>
+                    <input type="number" id="salarioBrutoInss"><br>
+                    <label for="descontoInss">Desconto do INSS (%):</label>
+                    <input type="number" id="descontoInss"><br>
+                    <button onclick="calcularDesconto()">Calcular Desconto</button>
+                    <h2 id="resultadoInss"></h2>
+                `;
+            } else if (tipo === 'imposto') {
+                calculadoraDiv.innerHTML = `
+                    <h2>Calculadora de Imposto de Renda</h2>
+                    <label for="nomeImposto">Nome:</label>
+                    <input type="text" id="nomeImposto"><br>
+                    <label for="salarioBrutoImposto">Salário Bruto:</label>
+                    <input type="number" id="salarioBrutoImposto"><br>
+                    <label for="descontoImposto">Desconto do INSS:</label>
+                    <input type="number" id="descontoImposto"><br>
+                    <label for="filhosImposto">Quantidade de Filhos:</label>
+                    <input type="number" id="filhosImposto"><br>
+                    <button onclick="calcularImposto()">Calcular Imposto de Renda</button>
+                    <h2 id="resultadoImposto"></h2>
+                `;
+            }
+
+            calculadoraDiv.classList.remove("hidden");
+        }
+
+        function calcularSalario() {
+            const nome = document.getElementById("nome").value;
+            const salarioBruto = parseFloat(document.getElementById("salarioBruto").value);
+            const descontos = parseFloat(document.getElementById("desconto").value);
+            const filhos = parseInt(document.getElementById("filhos").value);
+            const adicionalPorFilho = 100;
+            const salarioLiquido = salarioBruto - descontos + (filhos * adicionalPorFilho);
+            document.getElementById("resultadoSalario").innerText = `Olá, ${nome}. Seu salário líquido é: R$ ${salarioLiquido.toFixed(2)}`;
+        }
+
+        function calcularDesconto() {
+            const nome = document.getElementById("nomeInss").value;
+            const salarioBruto = parseFloat(document.getElementById("salarioBrutoInss").value);
+            const percentualDesconto = parseFloat(document.getElementById("descontoInss").value) / 100;
+            const descontoINSS = salarioBruto * percentualDesconto;
+            const salarioLiquido = salarioBruto - descontoINSS;
+            document.getElementById("resultadoInss").innerText = `Olá, ${nome}. O desconto do INSS é: R$ ${descontoINSS.toFixed(2)}, e seu salário líquido é: R$ ${salarioLiquido.toFixed(2)}`;
+        }
+
+        function calcularImposto() {
+            const nome = document.getElementById("nomeImposto").value;
+            const salarioBruto = parseFloat(document.getElementById("salarioBrutoImposto").value);
+            const descontoINSS = parseFloat(document.getElementById("descontoImposto").value);
+            const filhos = parseInt(document.getElementById("filhosImposto").value);
+            const adicionalPorFilho = 100;
+            const salarioLiquido = salarioBruto - descontoINSS + (filhos * adicionalPorFilho);
+
+            let imposto = 0;
+            if (salarioLiquido > 1903.98) {
+                if (salarioLiquido <= 2826.65) {
+                    imposto = (salarioLiquido - 1903.98) * 0.075;
+                } else if (salarioLiquido <= 3751.05) {
+                    imposto = (salarioLiquido - 2826.65) * 0.15 + 142.80;
+                } else {
+                    imposto = (salarioLiquido - 3751.05) * 0.225 + 354.80;
+                }
+            }
+            
+            const salarioFinal = salarioLiquido - imposto;
+            document.getElementById("resultadoImposto").innerText = `Olá, ${nome}. Seu Imposto de Renda é: R$ ${imposto.toFixed(2)}, e seu salário líquido após o imposto é: R$ ${salarioFinal.toFixed(2)}`;
         }
     </script>
 </body>
